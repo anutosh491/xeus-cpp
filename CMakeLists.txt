@@ -131,6 +131,10 @@ set(XEUS_CPP_SRC
     src/xparser.cpp
 )
 
+if(EMSCRIPTEN)
+    list(APPEND XEUS_CPP_SRC src/xinterpreter_wasm.cpp)
+endif()
+
 set(XEUS_CPP_MAIN_SRC
     src/main.cpp
 )
