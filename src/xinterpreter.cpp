@@ -42,10 +42,9 @@ void* createInterpreter(const Args &ExtraArgs = {}) {
       std::string resource_dir = Cpp::DetectResourceDir();
       if (resource_dir.empty())
       {
-        std::cerr << "Failed to detect the resource-dir\n";
+          std::cerr << "Failed to detect the resource-dir\n";
       }
-      ClangArgs.push_back("-resource-dir");
-      ClangArgs.push_back(resource_dir.c_str());
+      ClangArgs.push_back("-resource-dir " + resource_dir);
   }
   std::vector<std::string> CxxSystemIncludes;
   Cpp::DetectSystemCompilerIncludePaths(CxxSystemIncludes);
