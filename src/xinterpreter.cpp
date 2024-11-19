@@ -7,15 +7,6 @@
  * The full license is in the file LICENSE, distributed with this software.         *
  ************************************************************************************/
 
-#include <algorithm>
-#include <cinttypes>  // required before including llvm/ExecutionEngine/Orc/LLJIT.h because missing llvm/Object/SymbolicFile.h
-#include <cstdarg>
-#include <cstdio>
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
-
 #include "xeus/xsystem.hpp"
 #include <xeus/xhelper.hpp>
 
