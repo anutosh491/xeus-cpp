@@ -259,6 +259,9 @@ jobs:
           export PREFIX=$MAMBA_ROOT_PREFIX/envs/xeus-cpp-wasm-host 
           echo "PREFIX=$PREFIX" >> $GITHUB_ENV
           export SYSROOT_PATH=$HOME/emsdk/upstream/emscripten/cache/sysroot
+          echo "Checking permissions for $SYSROOT_PATH:"
+          ls -ld $SYSROOT_PATH
+          ls -ld $SYSROOT_PATH/include
 
           emcmake cmake \
             -DCMAKE_BUILD_TYPE=Release                        \
@@ -267,7 +270,7 @@ jobs:
             -DCMAKE_FIND_ROOT_PATH=$PREFIX                    \
             -DSYSROOT_PATH=$SYSROOT_PATH                      \
             ..
-
+  
           # Check for xcpp in the sysroot/include
           echo "Checking sysroot/include directory..."
           ls -la $SYSROOT_PATH/include
