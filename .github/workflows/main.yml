@@ -267,6 +267,14 @@ jobs:
             -DCMAKE_FIND_ROOT_PATH=$PREFIX                    \
             -DSYSROOT_PATH=$SYSROOT_PATH                      \
             ..
+
+          # Check for xcpp in the sysroot/include
+          echo "Checking sysroot/include directory..."
+          ls -la $SYSROOT_PATH/include
+
+          echo "Checking xcpp directory within sysroot/include..."
+          ls -la $SYSROOT_PATH/include/xcpp || echo "xcpp directory not found!"
+          
           emmake make -j  ${{ env.ncpus }} install
           cd $PREFIX/bin
           strings xcpp.data > xcpp_strings.txt
