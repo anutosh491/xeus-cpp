@@ -68,6 +68,9 @@ jobs:
             ..
           emmake make -j  ${{ env.ncpus }} install
 
+          cd /Users/runner/micromamba/envs/xeus-cpp-wasm-host/bin
+          strings xcpp.data | grep "mime_bundle_repr_via_sstream"
+
       - name: Jupyter Lite integration 
         shell: bash -l {0}
         run: |
