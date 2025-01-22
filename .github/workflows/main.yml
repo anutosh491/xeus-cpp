@@ -262,6 +262,11 @@ jobs:
           echo "Checking permissions for $SYSROOT_PATH:"
           ls -ld $SYSROOT_PATH
           ls -ld $SYSROOT_PATH/include
+          echo "Testing write access to sysroot/include..."
+          mkdir -p /home/runner/emsdk/upstream/emscripten/cache/sysroot/include/test_dir
+          echo "Test file content" > /home/runner/emsdk/upstream/emscripten/cache/sysroot/include/test_dir/test_file.txt
+          cat /home/runner/emsdk/upstream/emscripten/cache/sysroot/include/test_dir/test_file.txt
+
 
           emcmake cmake \
             -DCMAKE_BUILD_TYPE=Release                        \
