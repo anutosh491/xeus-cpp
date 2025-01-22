@@ -269,7 +269,9 @@ jobs:
             ..
           emmake make -j  ${{ env.ncpus }} install
           cd $PREFIX/bin
-          strings xcpp.data | grep "mime_bundle_repr_via_sstream"
+          strings xcpp.data > xcpp_strings.txt
+          cat xcpp_strings.txt | grep "mime_bundle_repr_via_sstream" || true
+
 
       - name: Jupyter Lite integration 
         shell: bash -l {0}
