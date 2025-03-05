@@ -67,6 +67,12 @@ if(EMSCRIPTEN)
 else()
     find_package(Threads)
 
+    set(XEUS_CPP_TESTS
+        main.cpp
+        test_interpreter.cpp
+    )
+    add_executable(test_xeus_cpp ${XEUS_CPP_TESTS})
+
     if (APPLE)
         set_target_properties(test_xeus_cpp PROPERTIES
             MACOSX_RPATH ON
@@ -81,12 +87,7 @@ else()
     set_target_properties(test_xeus_cpp PROPERTIES
         INSTALL_RPATH_USE_LINK_PATH TRUE
     )
-    set(XEUS_CPP_TESTS
-        main.cpp
-        test_interpreter.cpp
-    )
 
-    add_executable(test_xeus_cpp ${XEUS_CPP_TESTS})
     target_link_libraries(test_xeus_cpp xeus-cpp doctest::doctest ${CMAKE_THREAD_LIBS_INIT})
     target_include_directories(test_xeus_cpp PRIVATE ${XEUS_CPP_INCLUDE_DIR})
 
