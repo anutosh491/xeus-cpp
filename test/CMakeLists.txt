@@ -43,14 +43,14 @@ endif()
 
 find_package(doctest)
 
+set(XEUS_CPP_TESTS
+    main.cpp
+    test_interpreter.cpp
+)
+
+add_executable(test_xeus_cpp ${XEUS_CPP_TESTS})
+
 if(EMSCRIPTEN)
-    set(XEUS_CPP_TESTS
-        main.cpp
-        test_interpreter1.cpp
-    )
-
-    add_executable(test_xeus_cpp ${XEUS_CPP_TESTS})
-
     target_link_libraries(test_xeus_cpp PRIVATE xeus-cpp-static doctest::doctest)
 
     target_compile_options(test_xeus_cpp
@@ -61,17 +61,25 @@ if(EMSCRIPTEN)
         PUBLIC "SHELL: -fexceptions"
         PUBLIC "SHELL: -s MAIN_MODULE=1"
         PUBLIC "SHELL: -s ASSERTIONS=0"
+        PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
+        PUBLIC "SHELL: -s EXIT_RUNTIME=1"
+        PUBLIC "SHELL: -s STACK_SIZE=32mb"
+        PUBLIC "SHELL: -s INITIAL_MEMORY=128mb"
+        PUBLIC "SHELL: --preload-file ${SYSROOT_PATH}/include@/include"
+        PUBLIC "SHELL: --preload-file ../${XEUS_CPP_DATA_DIR}@/share/xeus-cpp"
+        PUBLIC "SHELL: --preload-file ../${XEUS_CPP_CONF_DIR}@/etc/xeus-cpp"
     )
 
     target_include_directories(test_xeus_cpp PRIVATE ${XEUS_CPP_INCLUDE_DIR})
+
+    add_custom_command(TARGET test_xeus_cpp POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_INSTALL_PREFIX}/lib/libclangCppInterOp.so
+        ${CMAKE_CURRENT_BINARY_DIR}/libclangCppInterOp.so
+        COMMENT "Copying libclangCppInterOp.so to the test directory"
+    )
 else()
     find_package(Threads)
-
-    set(XEUS_CPP_TESTS
-        main.cpp
-        test_interpreter.cpp
-    )
-    add_executable(test_xeus_cpp ${XEUS_CPP_TESTS})
 
     if (APPLE)
         set_target_properties(test_xeus_cpp PROPERTIES
