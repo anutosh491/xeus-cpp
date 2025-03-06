@@ -78,7 +78,8 @@ namespace xcpp
         }
     };
 
-    std::string find_type_slow(const std::string& expression) {
+    inline std::string find_type_slow(const std::string& expression)
+    {
         static unsigned long long var_count = 0;
 
         if (auto *type = Cpp::GetType(expression))
@@ -111,8 +112,7 @@ namespace xcpp
         return result;
     }
 
-    std::pair<bool, std::smatch> is_inspect_request(const std::string& code,
-                                                    const std::regex& re)
+    inline std::pair<bool, std::smatch> is_inspect_request(const std::string& code, const std::regex& re)
     {
         std::smatch inspect;
         if (std::regex_search(code, inspect, re))
@@ -120,7 +120,7 @@ namespace xcpp
         return std::make_pair(false, inspect);
     }
 
-    void inspect(const std::string& code, nl::json& kernel_res)
+    inline void inspect(const std::string& code, nl::json& kernel_res)
     {
         std::string tagconf_dir = retrieve_tagconf_dir();
         std::string tagfiles_dir = retrieve_tagfile_dir();

@@ -166,9 +166,10 @@ TEST_SUITE("execute_request")
         REQUIRE(result["status"] == "error");
     }
 }
-
 TEST_SUITE("inspect_request")
 {
+
+#if !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
     TEST_CASE("good_status")
     {
         std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
@@ -187,6 +188,7 @@ TEST_SUITE("inspect_request")
         REQUIRE(result["found"] == true);
         REQUIRE(result["status"] == "ok");
     }
+#endif
 
     TEST_CASE("bad_status")
     {
@@ -611,6 +613,7 @@ TEST_SUITE("xsystem_clone")
     }
 }
 
+#if !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
 TEST_SUITE("xsystem_apply")
 {
     TEST_CASE("apply_xsystem")
@@ -624,6 +627,7 @@ TEST_SUITE("xsystem_apply")
         REQUIRE(kernel_res["status"] == "ok");
     }
 }
+#endif
 
 TEST_SUITE("xmagics_contains"){
     TEST_CASE("bad_status_cell") {
@@ -842,6 +846,7 @@ TEST_SUITE("xinspect"){
     }
 }
 
+#if !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
 TEST_SUITE("xassist"){
 
     TEST_CASE("model_not_found"){
@@ -980,6 +985,7 @@ TEST_SUITE("xassist"){
     }
 
 }
+#endif
 
 
 TEST_SUITE("file") {
