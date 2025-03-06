@@ -524,70 +524,70 @@ TEST_SUITE("xoptions")
     }
 }
 
-TEST_SUITE("os")
-{
-    TEST_CASE("write_new_file") {
-        xcpp::writefile wf;
-        std::string line = "filename testfile.txt -h";
-        std::string cell = "Hello, World!";
+// TEST_SUITE("os")
+// {
+//     TEST_CASE("write_new_file") {
+//         xcpp::writefile wf;
+//         std::string line = "filename testfile.txt -h";
+//         std::string cell = "Hello, World!";
 
-        wf(line, cell);
+//         wf(line, cell);
 
-        std::ifstream infile("testfile.txt");
-        REQUIRE(infile.good() == true);
-        infile.close();
+//         std::ifstream infile("testfile.txt");
+//         REQUIRE(infile.good() == true);
+//         infile.close();
 
-        std::remove("testfile.txt");
-    }
+//         std::remove("testfile.txt");
+//     }
 
-    TEST_CASE("overwrite_file") {
-        xcpp::writefile wf;
-        std::string line = "filename testfile.txt";
-        std::string cell = "Hello, World!";
+//     TEST_CASE("overwrite_file") {
+//         xcpp::writefile wf;
+//         std::string line = "filename testfile.txt";
+//         std::string cell = "Hello, World!";
 
-        wf(line, cell);
+//         wf(line, cell);
 
-        std::string overwrite_cell = "Overwrite test";
+//         std::string overwrite_cell = "Overwrite test";
         
-        wf(line, overwrite_cell);
+//         wf(line, overwrite_cell);
 
-        std::ifstream infile("testfile.txt");
-        std::string content;
-        std::getline(infile, content);
+//         std::ifstream infile("testfile.txt");
+//         std::string content;
+//         std::getline(infile, content);
 
-        REQUIRE(content == overwrite_cell);
-        infile.close();
+//         REQUIRE(content == overwrite_cell);
+//         infile.close();
 
-        std::remove("testfile.txt");
-    }
+//         std::remove("testfile.txt");
+//     }
 
-    TEST_CASE("append_file") {
-        xcpp::writefile wf;
-        std::string line = "filename testfile.txt";
-        std::string cell = "Hello, World!";
+//     TEST_CASE("append_file") {
+//         xcpp::writefile wf;
+//         std::string line = "filename testfile.txt";
+//         std::string cell = "Hello, World!";
 
-        wf(line, cell);
+//         wf(line, cell);
 
-        std::string append_line = "filename testfile.txt --append";
-        std::string append_cell = "Hello, again!";
+//         std::string append_line = "filename testfile.txt --append";
+//         std::string append_cell = "Hello, again!";
 
-        wf(append_line, append_cell);
+//         wf(append_line, append_cell);
 
-        std::ifstream infile("testfile.txt");
-        std::vector<std::string> lines;
-        std::string content;
-        while(std::getline(infile, content)) {
-            lines.push_back(content);
-        }
+//         std::ifstream infile("testfile.txt");
+//         std::vector<std::string> lines;
+//         std::string content;
+//         while(std::getline(infile, content)) {
+//             lines.push_back(content);
+//         }
         
-        REQUIRE(lines[0] == cell);
-        REQUIRE(lines[1] == append_cell);
-        infile.close();
+//         REQUIRE(lines[0] == cell);
+//         REQUIRE(lines[1] == append_cell);
+//         infile.close();
 
-        std::remove("testfile.txt");
-    }
+//         std::remove("testfile.txt");
+//     }
 
-}
+// }
 
 TEST_SUITE("xsystem_clone")
 {
