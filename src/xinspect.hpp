@@ -78,7 +78,8 @@ namespace xcpp
         }
     };
 
-    inline std::string find_type_slow(const std::string& expression) {
+    inline std::string find_type_slow(const std::string& expression)
+    {
         static unsigned long long var_count = 0;
 
         if (auto *type = Cpp::GetType(expression))
@@ -111,8 +112,7 @@ namespace xcpp
         return result;
     }
 
-    inline std::pair<bool, std::smatch> is_inspect_request(const std::string& code,
-                                                    const std::regex& re)
+    inline std::pair<bool, std::smatch> is_inspect_request(const std::string& code, const std::regex& re)
     {
         std::smatch inspect;
         if (std::regex_search(code, inspect, re))
