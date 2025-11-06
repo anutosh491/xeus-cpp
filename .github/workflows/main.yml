@@ -237,20 +237,19 @@ jobs:
             -DCMAKE_COMPILE_WARNING_AS_ERROR=ON            \
             ..
 
-          micromamba create -n node-env -c conda-forge nodejs=22
-          export PATH="$MAMBA_ROOT_PREFIX/envs/node-env/bin:$PATH"
-
           emmake make -j ${{ env.ncpus }}
 
       - name: Test xeus-cpp in Node and install
         shell: bash -l {0}
         run: |
-          pushd build/test
+          micromamba create -n node-env -c conda-forge nodejs=22 --yes
+          echo "$MAMBA_ROOT_PREFIX/envs/node-env/bin" >> $GITHUB_PATH
+          cd build/test
           node -v
           node test_xeus_cpp.js
 
           # Install after tests succeed
-          pushd ..
+          cd ..
           emmake make -j ${{ env.ncpus }} install
 
       - name: Test Emscripten xeus-cpp in browser
