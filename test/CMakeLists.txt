@@ -96,10 +96,6 @@ if(EMSCRIPTEN)
         ${CMAKE_CURRENT_BINARY_DIR}/libxeus.so
         COMMENT "Copying libxeus.so to the test directory"
     )
-    add_custom_target(check-xeus-cpp
-        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_CURRENT_BINARY_DIR} node test_xeus_cpp.js
-        DEPENDS test_xeus_cpp
-    )
 else()
     find_package(Threads)
 
