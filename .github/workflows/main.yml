@@ -241,9 +241,16 @@ jobs:
           export PATH="$MAMBA_ROOT_PREFIX/envs/node-env/bin:$PATH"
 
           emmake make -j ${{ env.ncpus }}
-          cd test
+
+      - name: Test xeus-cpp in Node and install
+        shell: bash -l {0}
+        run: |
+          pushd build/test
           node -v
           node test_xeus_cpp.js
+
+          # Install after tests succeed
+          pushd ..
           emmake make -j ${{ env.ncpus }} install
 
       - name: Test Emscripten xeus-cpp in browser
