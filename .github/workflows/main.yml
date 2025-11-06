@@ -240,7 +240,10 @@ jobs:
           micromamba create -n node-env -c conda-forge nodejs=22
           export PATH="$MAMBA_ROOT_PREFIX/envs/node-env/bin:$PATH"
 
-          emmake make -j ${{ env.ncpus }} check-xeus-cpp
+          emmake make -j ${{ env.ncpus }}
+          cd test
+          node -v
+          node test_xeus_cpp.js
           emmake make -j ${{ env.ncpus }} install
 
       - name: Test Emscripten xeus-cpp in browser
