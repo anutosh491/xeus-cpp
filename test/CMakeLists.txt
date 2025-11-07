@@ -75,6 +75,9 @@ if(EMSCRIPTEN)
         PUBLIC "SHELL:-sEXIT_RUNTIME=1"
         PUBLIC "SHELL:-sSTACK_SIZE=32mb"
         PUBLIC "SHELL:-sINITIAL_MEMORY=512mb"  # plenty for JSON/tests
+        PUBLIC "SHELL:-sSAFE_HEAP=1"           # catch invalid heap access
+        PUBLIC "SHELL:-sDEMANGLE_SUPPORT=1"    # readable C++ names
+        PUBLIC "SHELL:-gsource-map"            # line info for DevTools
         PUBLIC "SHELL:--preload-file ${ESCAPED_SYSROOT_PATH}/include@/include"
         PUBLIC "SHELL:--preload-file ../${XEUS_CPP_DATA_DIR}@/share/xeus-cpp"
         PUBLIC "SHELL:--preload-file ../${XEUS_CPP_CONF_DIR}@/etc/xeus-cpp"
