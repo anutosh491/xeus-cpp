@@ -204,227 +204,227 @@ TEST_SUITE("execute_request")
     }
 }
 
-// TEST_SUITE("inspect_request")
-// {
-// #if defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
-//     TEST_CASE("good_status"
-//             * doctest::should_fail(true)
-//             * doctest::description("TODO: Currently fails for the Emscripten build"))
-// #else
-//     TEST_CASE("good_status")
-// #endif
-//     {
-//         std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
-//         xcpp::interpreter interpreter((int)Args.size(), Args.data());
+TEST_SUITE("inspect_request")
+{
+#if defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
+    TEST_CASE("good_status"
+            * doctest::should_fail(true)
+            * doctest::description("TODO: Currently fails for the Emscripten build"))
+#else
+    TEST_CASE("good_status")
+#endif
+    {
+        std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
+        xcpp::interpreter interpreter((int)Args.size(), Args.data());
 
-//         std::string code = "std::vector";
-//         int cursor_pos = 11;
+        std::string code = "std::vector";
+        int cursor_pos = 11;
 
-//         nl::json result = interpreter.inspect_request(
-//             code, 
-//             cursor_pos, 
-//             /*detail_level=*/0
-//         );
+        nl::json result = interpreter.inspect_request(
+            code, 
+            cursor_pos, 
+            /*detail_level=*/0
+        );
 
-//         REQUIRE(result["user_expressions"] == nl::json::object());
-//         REQUIRE(result["found"] == true);
-//         REQUIRE(result["status"] == "ok");
-//     }
+        REQUIRE(result["user_expressions"] == nl::json::object());
+        REQUIRE(result["found"] == true);
+        REQUIRE(result["status"] == "ok");
+    }
 
-//     TEST_CASE("bad_status")
-//     {
-//         std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
-//         xcpp::interpreter interpreter((int)Args.size(), Args.data());
+    TEST_CASE("bad_status")
+    {
+        std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
+        xcpp::interpreter interpreter((int)Args.size(), Args.data());
 
-//         std::string code = "nonExistentFunction";
-//         int cursor_pos = 19;
+        std::string code = "nonExistentFunction";
+        int cursor_pos = 19;
 
-//         nl::json result = interpreter.inspect_request(
-//             code, 
-//             cursor_pos, 
-//             /*detail_level=*/0
-//         );
+        nl::json result = interpreter.inspect_request(
+            code, 
+            cursor_pos, 
+            /*detail_level=*/0
+        );
 
-//         REQUIRE(result["found"] == false);
-//         REQUIRE(result["status"] == "error");
-//     }
-// }
+        REQUIRE(result["found"] == false);
+        REQUIRE(result["status"] == "error");
+    }
+}
 
-// TEST_SUITE("kernel_info_request")
-// {
-//     TEST_CASE("good_status")
-//     {
-//         std::vector<const char*> Args = {
-//             "-v", "-std=c++23"  // test input for get_stdopt
-//         };
-//         xcpp::interpreter interpreter((int)Args.size(), Args.data());
+TEST_SUITE("kernel_info_request")
+{
+    TEST_CASE("good_status")
+    {
+        std::vector<const char*> Args = {
+            "-v", "-std=c++23"  // test input for get_stdopt
+        };
+        xcpp::interpreter interpreter((int)Args.size(), Args.data());
 
-//         nl::json result = interpreter.kernel_info_request();
+        nl::json result = interpreter.kernel_info_request();
 
-//         REQUIRE(result["implementation"] == "xeus-cpp");
-//         REQUIRE(result["language_info"]["name"] == "C++");
-//         REQUIRE(result["language_info"]["mimetype"] == "text/x-c++src");
-//         REQUIRE(result["language_info"]["codemirror_mode"] == "text/x-c++src");
-//         REQUIRE(result["language_info"]["file_extension"] == ".cpp");
-//         REQUIRE(result["language_info"]["version"] == "23");
-//         REQUIRE(result["status"] == "ok");
-//     }
+        REQUIRE(result["implementation"] == "xeus-cpp");
+        REQUIRE(result["language_info"]["name"] == "C++");
+        REQUIRE(result["language_info"]["mimetype"] == "text/x-c++src");
+        REQUIRE(result["language_info"]["codemirror_mode"] == "text/x-c++src");
+        REQUIRE(result["language_info"]["file_extension"] == ".cpp");
+        REQUIRE(result["language_info"]["version"] == "23");
+        REQUIRE(result["status"] == "ok");
+    }
 
-// }
+}
 
-// TEST_SUITE("shutdown_request")
-// {
-//     TEST_CASE("good_status")
-//     {
-//         std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
-//         xcpp::interpreter interpreter((int)Args.size(), Args.data());
+TEST_SUITE("shutdown_request")
+{
+    TEST_CASE("good_status")
+    {
+        std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
+        xcpp::interpreter interpreter((int)Args.size(), Args.data());
 
-//         REQUIRE_NOTHROW(interpreter.shutdown_request());
-//     }
+        REQUIRE_NOTHROW(interpreter.shutdown_request());
+    }
 
-// }
+}
 
-// TEST_SUITE("is_complete_request")
-// {
-//     TEST_CASE("incomplete_code")
-//     {
-//         std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
-//         xcpp::interpreter interpreter((int)Args.size(), Args.data());
+TEST_SUITE("is_complete_request")
+{
+    TEST_CASE("incomplete_code")
+    {
+        std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
+        xcpp::interpreter interpreter((int)Args.size(), Args.data());
 
-//         std::string code = "int main() \\";
-//         nl::json result = interpreter.is_complete_request(code);
-//         REQUIRE(result["status"] == "incomplete");
-//     }
+        std::string code = "int main() \\";
+        nl::json result = interpreter.is_complete_request(code);
+        REQUIRE(result["status"] == "incomplete");
+    }
 
-//     TEST_CASE("complete_code")
-//     {
-//         std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
-//         xcpp::interpreter interpreter((int)Args.size(), Args.data());
+    TEST_CASE("complete_code")
+    {
+        std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
+        xcpp::interpreter interpreter((int)Args.size(), Args.data());
 
-//         std::string code = "int main() {}";
-//         nl::json result = interpreter.is_complete_request(code);
-//         REQUIRE(result["status"] == "complete");
-//     }
-// }
+        std::string code = "int main() {}";
+        nl::json result = interpreter.is_complete_request(code);
+        REQUIRE(result["status"] == "complete");
+    }
+}
 
-// TEST_SUITE("trim"){
+TEST_SUITE("trim"){
 
-//     TEST_CASE("trim_basic_test"){
-//         std::string argument = "argument";
+    TEST_CASE("trim_basic_test"){
+        std::string argument = "argument";
 
-//         std::string result = xcpp::trim(argument);
+        std::string result = xcpp::trim(argument);
 
-//         REQUIRE(result == "argument");
-//     }
+        REQUIRE(result == "argument");
+    }
 
-//     /*Checks if it trims the string which 
-//     has an empty space at the start and in the end*/
-//     TEST_CASE("trim_start_and_end"){
-//         std::string argument = " argument ";
+    /*Checks if it trims the string which 
+    has an empty space at the start and in the end*/
+    TEST_CASE("trim_start_and_end"){
+        std::string argument = " argument ";
 
-//         std::string result = xcpp::trim(argument);
+        std::string result = xcpp::trim(argument);
 
-//         REQUIRE(result == "argument");
-//     }
+        REQUIRE(result == "argument");
+    }
 
-//     /*Checks if it trims the string which has no characters*/
-//     TEST_CASE("trim_empty"){
-//         std::string argument = "  ";
+    /*Checks if it trims the string which has no characters*/
+    TEST_CASE("trim_empty"){
+        std::string argument = "  ";
 
-//         std::string result = xcpp::trim(argument);
+        std::string result = xcpp::trim(argument);
 
-//         REQUIRE(result == "");
-//     }
+        REQUIRE(result == "");
+    }
 
-//     /*Checks if it trims the string is empty*/
-//     TEST_CASE("trim_empty"){
-//         std::string argument = "";
+    /*Checks if it trims the string is empty*/
+    TEST_CASE("trim_empty"){
+        std::string argument = "";
 
-//         std::string result = xcpp::trim(argument);
+        std::string result = xcpp::trim(argument);
 
-//         REQUIRE(result == "");
-//     }
+        REQUIRE(result == "");
+    }
 
-// }
+}
 
-// TEST_SUITE("is_match_magics_manager")
-// {
-//     // This test case checks if the function `is_match` correctly identifies strings that match
-//     // the regex pattern used in `xmagics_manager`. It sets up a scenario where strings that should
-//     // match the pattern are passed and checks if the function returns true.
-//     TEST_CASE("is_match_true")
-//     {
-//         xcpp::xmagics_manager manager;
+TEST_SUITE("is_match_magics_manager")
+{
+    // This test case checks if the function `is_match` correctly identifies strings that match
+    // the regex pattern used in `xmagics_manager`. It sets up a scenario where strings that should
+    // match the pattern are passed and checks if the function returns true.
+    TEST_CASE("is_match_true")
+    {
+        xcpp::xmagics_manager manager;
 
-//         bool result1 = manager.is_match("%%magic");
-//         bool result2 = manager.is_match("%magic");
+        bool result1 = manager.is_match("%%magic");
+        bool result2 = manager.is_match("%magic");
 
-//         REQUIRE(result1 == true);
-//         REQUIRE(result2 == true);
-//     }
+        REQUIRE(result1 == true);
+        REQUIRE(result2 == true);
+    }
 
-//     // This test case checks if the function `is_match` correctly identifies strings that do not match
-//     // the regex pattern used in `xmagics_manager`. It sets up a scenario where strings that should not
-//     // match the pattern are passed and checks if the function returns false.
-//     TEST_CASE("is_match_false")
-//     {
-//         xcpp::xmagics_manager manager;
+    // This test case checks if the function `is_match` correctly identifies strings that do not match
+    // the regex pattern used in `xmagics_manager`. It sets up a scenario where strings that should not
+    // match the pattern are passed and checks if the function returns false.
+    TEST_CASE("is_match_false")
+    {
+        xcpp::xmagics_manager manager;
 
-//         bool result1 = manager.is_match("not a magic");
-//         bool result2 = manager.is_match("%%");
-//         bool result3 = manager.is_match("%");
+        bool result1 = manager.is_match("not a magic");
+        bool result2 = manager.is_match("%%");
+        bool result3 = manager.is_match("%");
 
-//         REQUIRE(result1 == false);
-//         REQUIRE(result2 == false);
-//         REQUIRE(result3 == false);
-//     }
-// }
+        REQUIRE(result1 == false);
+        REQUIRE(result2 == false);
+        REQUIRE(result3 == false);
+    }
+}
 
-// TEST_SUITE("clone_magics_manager")
-// {
-//     // This test case checks if the function `clone_magics_manager` returns a non-null pointer
-//     // when called. It doesn't require any specific setup as it's testing the default behavior
-//     // of the function, and checks if the function returns a non-null pointer.
-//     TEST_CASE("clone_magics_manager_not_null")
-//     {
-//         xcpp::xmagics_manager manager;
+TEST_SUITE("clone_magics_manager")
+{
+    // This test case checks if the function `clone_magics_manager` returns a non-null pointer
+    // when called. It doesn't require any specific setup as it's testing the default behavior
+    // of the function, and checks if the function returns a non-null pointer.
+    TEST_CASE("clone_magics_manager_not_null")
+    {
+        xcpp::xmagics_manager manager;
 
-//         std::unique_ptr<xcpp::xpreamble> clone = manager.clone();
+        std::unique_ptr<xcpp::xpreamble> clone = manager.clone();
 
-//         REQUIRE(clone != nullptr);
-//     }
+        REQUIRE(clone != nullptr);
+    }
 
-//     // This test case checks if the function `clone_magics_manager` returns a cloned object
-//     // of the same type as the original. It calls the function and checks if the type of the
-//     // returned object matches the type of the original `magics_manager`.
-//     TEST_CASE("clone_magics_manager_same_type")
-//     {
-//         xcpp::xmagics_manager manager;
+    // This test case checks if the function `clone_magics_manager` returns a cloned object
+    // of the same type as the original. It calls the function and checks if the type of the
+    // returned object matches the type of the original `magics_manager`.
+    TEST_CASE("clone_magics_manager_same_type")
+    {
+        xcpp::xmagics_manager manager;
 
-//         std::unique_ptr<xcpp::xpreamble> clone = manager.clone();
+        std::unique_ptr<xcpp::xpreamble> clone = manager.clone();
 
-//         REQUIRE(clone.get() != nullptr);
-//     }
-// }
+        REQUIRE(clone.get() != nullptr);
+    }
+}
 
-// TEST_SUITE("xpreamble_manager_operator")
-// {
-//     // This test case checks if the `xpreamble_manager` correctly registers and accesses
-//     // a `xpreamble` object. It sets up a scenario where a `xpreamble` object is registered
-//     // with a name and checks if the object can be accessed using the same name.
-//     TEST_CASE("register_and_access")
-//     {
-//         std::string name = "test";
-//         xcpp::xpreamble_manager manager;
-//         std::unique_ptr<xcpp::xmagics_manager> magics = std::make_unique<xcpp::xmagics_manager>();
-//         auto* raw_ptr = magics.get();
-//         manager.register_preamble(name, std::move(magics));
+TEST_SUITE("xpreamble_manager_operator")
+{
+    // This test case checks if the `xpreamble_manager` correctly registers and accesses
+    // a `xpreamble` object. It sets up a scenario where a `xpreamble` object is registered
+    // with a name and checks if the object can be accessed using the same name.
+    TEST_CASE("register_and_access")
+    {
+        std::string name = "test";
+        xcpp::xpreamble_manager manager;
+        std::unique_ptr<xcpp::xmagics_manager> magics = std::make_unique<xcpp::xmagics_manager>();
+        auto* raw_ptr = magics.get();
+        manager.register_preamble(name, std::move(magics));
 
-//         xcpp::xholder_preamble& result = manager.operator[](name);
+        xcpp::xholder_preamble& result = manager.operator[](name);
 
-//         REQUIRE(&(result.get_cast<xcpp::xmagics_manager>()) == raw_ptr);
-//     }
-// }
+        REQUIRE(&(result.get_cast<xcpp::xmagics_manager>()) == raw_ptr);
+    }
+}
 
 // TEST_SUITE("xbuffer")
 // {
