@@ -639,21 +639,21 @@ TEST_SUITE("xsystem_clone")
     }
 }
 
-// #if !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
-// TEST_SUITE("xsystem_apply")
-// {
-//     TEST_CASE("apply_xsystem")
-//     {
-//         xcpp::xsystem system;
-//         std::string code = "!echo Hello, World!";
-//         nl::json kernel_res;
+#if !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
+TEST_SUITE("xsystem_apply")
+{
+    TEST_CASE("apply_xsystem")
+    {
+        xcpp::xsystem system;
+        std::string code = "!echo Hello, World!";
+        nl::json kernel_res;
 
-//         system.apply(code, kernel_res);
+        system.apply(code, kernel_res);
 
-//         REQUIRE(kernel_res["status"] == "ok");
-//     }
-// }
-// #endif
+        REQUIRE(kernel_res["status"] == "ok");
+    }
+}
+#endif
 
 TEST_SUITE("xmagics_contains"){
     TEST_CASE("bad_status_cell") {
@@ -749,24 +749,24 @@ TEST_SUITE("xmagics_apply"){
     }
 }
 
-// #if defined(__GNUC__) && !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
-// TEST_SUITE("xutils_handler"){
-//     TEST_CASE("handler") {
-//         pid_t pid = fork();
-//         if (pid == 0) {
+#if defined(__GNUC__) && !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
+TEST_SUITE("xutils_handler"){
+    TEST_CASE("handler") {
+        pid_t pid = fork();
+        if (pid == 0) {
 
-//             signal(SIGSEGV, xcpp::handler);
-//             exit(0);  
+            signal(SIGSEGV, xcpp::handler);
+            exit(0);  
 
-//         } else {
+        } else {
             
-//             int status;
-//             REQUIRE(WEXITSTATUS(status) == 0);
+            int status;
+            REQUIRE(WEXITSTATUS(status) == 0);
             
-//         }
-//     }
-// }
-// #endif
+        }
+    }
+}
+#endif
 
 TEST_SUITE("complete_request")
 {
