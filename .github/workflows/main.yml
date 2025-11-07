@@ -239,19 +239,21 @@ jobs:
 
           emmake make -j ${{ env.ncpus }} install
 
-      - name: Test xeus-cpp in Node and install
-        shell: bash -l {0}
-        run: |
-          micromamba create -n node-env -c conda-forge nodejs=22 --yes
-          micromamba activate node-env
-          cd build/test
-          node -v
-          node test_xeus_cpp.js
+      # - name: Test xeus-cpp in Node and install
+      #   shell: bash -l {0}
+      #   run: |
+      #     micromamba create -n node-env -c conda-forge nodejs=22 --yes
+      #     micromamba activate node-env
+      #     cd build/test
+      #     node -v
+      #     node test_xeus_cpp.js
 
       - name: Test Emscripten xeus-cpp in browser
         shell: bash -l {0}
         run: |
           set -e
+          micromamba create -n xeus-lite-host jupyterlite-core=0.6 jupyter_server jupyterlite-xeus nodejs=22 -c conda-forge
+          micromamba activate xeus-lite-host
           cd build/test
           # Fresh install browsers, and run Emscripten tests in them
           # This is to match the Emscripten build instructions, where
@@ -319,6 +321,7 @@ jobs:
             echo "Running test_xeus_cpp in Google Chrome"
             python ${{ env.BUILD_PREFIX }}/bin/emrun.py --browser="google-chrome" --kill_exit --timeout 60 --browser-args="--headless --no-sandbox"  test_xeus_cpp.html
           fi
+          node test_xeus_cpp.js
         timeout-minutes: 4
 
       - name: Jupyter Lite integration
