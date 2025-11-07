@@ -72,6 +72,7 @@ if(EMSCRIPTEN)
         PUBLIC "SHELL:-sWASM_BIGINT"
         PUBLIC "SHELL:-sASSERTIONS=2"          # runtime errors instead of silent traps
         PUBLIC "SHELL:-sALLOW_MEMORY_GROWTH=1"
+        PUBLIC "SHELL:EXIT_RUNTIME=1"
         PUBLIC "SHELL:-sSTACK_SIZE=32mb"
         PUBLIC "SHELL:-sINITIAL_MEMORY=512mb"  # plenty for JSON/tests
         PUBLIC "SHELL:-sSAFE_HEAP=1"           # catch invalid heap access
