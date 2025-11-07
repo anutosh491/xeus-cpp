@@ -67,18 +67,19 @@ if(EMSCRIPTEN)
     # Without this MINIFY_HTML=0 flag you end up with the situation where the creation of the
     # test_xeus_cpp.html file breaks on MacOS, but not Ubuntu
     target_link_options(test_xeus_cpp
-        PUBLIC "SHELL: -fexceptions"
-        PUBLIC "SHELL: -s MAIN_MODULE=1"
-        PUBLIC "SHELL: -s WASM_BIGINT"
-        PUBLIC "SHELL: -s ASSERTIONS=0"
-        PUBLIC "SHELL: -s ALLOW_MEMORY_GROWTH=1"
-        PUBLIC "SHELL: -s STACK_SIZE=32mb"
-        PUBLIC "SHELL: -s INITIAL_MEMORY=128mb"
-        PUBLIC "SHELL: --preload-file ${ESCAPED_SYSROOT_PATH}/include@/include"
-        PUBLIC "SHELL: --preload-file ../${XEUS_CPP_DATA_DIR}@/share/xeus-cpp"
-        PUBLIC "SHELL: --preload-file ../${XEUS_CPP_CONF_DIR}@/etc/xeus-cpp"
-        PUBLIC "SHELL: --emrun"
-        PUBLIC "SHELL: -s MINIFY_HTML=0"
+        PUBLIC "SHELL:-fexceptions"
+        PUBLIC "SHELL:-sMAIN_MODULE=1"
+        PUBLIC "SHELL:-sWASM_BIGINT"
+        PUBLIC "SHELL:-sASSERTIONS=2"          # runtime errors instead of silent traps
+        PUBLIC "SHELL:-sALLOW_MEMORY_GROWTH=1"
+        PUBLIC "SHELL:-sSTACK_SIZE=32mb"
+        PUBLIC "SHELL:-sINITIAL_MEMORY=512mb"  # plenty for JSON/tests
+        PUBLIC "SHELL:-sSAFE_HEAP=1"           # catch invalid heap access
+        PUBLIC "SHELL:-sDEMANGLE_SUPPORT=1"    # readable C++ names
+        PUBLIC "SHELL:-gsource-map"            # line info for DevTools
+        PUBLIC "SHELL:--preload-file ${ESCAPED_SYSROOT_PATH}/include@/include"
+        PUBLIC "SHELL:--preload-file ../${XEUS_CPP_DATA_DIR}@/share/xeus-cpp"
+        PUBLIC "SHELL:--preload-file ../${XEUS_CPP_CONF_DIR}@/etc/xeus-cpp"
     )
 
     target_include_directories(test_xeus_cpp PRIVATE ${XEUS_CPP_INCLUDE_DIR})
