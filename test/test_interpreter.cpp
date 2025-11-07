@@ -880,146 +880,146 @@ TEST_SUITE("xinspect"){
 
 }
 
-// #if !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
-// TEST_SUITE("xassist"){
+#if !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
+TEST_SUITE("xassist"){
 
-//     TEST_CASE("model_not_found"){
-//         xcpp::xassist assist;
-//         std::string line = "%%xassist testModel";
-//         std::string cell = "test input";
+    TEST_CASE("model_not_found"){
+        xcpp::xassist assist;
+        std::string line = "%%xassist testModel";
+        std::string cell = "test input";
 
-//         StreamRedirectRAII redirect(std::cerr);
+        StreamRedirectRAII redirect(std::cerr);
 
-//         assist(line, cell);
+        assist(line, cell);
 
-//         REQUIRE(redirect.getCaptured() == "Model not found.\n");
+        REQUIRE(redirect.getCaptured() == "Model not found.\n");
 
-//     }
+    }
 
-//     TEST_CASE("gemini"){
-//         xcpp::xassist assist;
-//         std::string line = "%%xassist gemini --save-key";
-//         std::string cell = "1234";
+    TEST_CASE("gemini"){
+        xcpp::xassist assist;
+        std::string line = "%%xassist gemini --save-key";
+        std::string cell = "1234";
 
-//         assist(line, cell);
+        assist(line, cell);
 
-//         std::ifstream infile("gemini_api_key.txt");
-//         std::string content;
-//         std::getline(infile, content);
+        std::ifstream infile("gemini_api_key.txt");
+        std::string content;
+        std::getline(infile, content);
 
-//         REQUIRE(content == "1234");
-//         infile.close();
+        REQUIRE(content == "1234");
+        infile.close();
 
-//         line = "%%xassist gemini --save-model";
-//         cell = "1234";
+        line = "%%xassist gemini --save-model";
+        cell = "1234";
 
-//         assist(line, cell);
+        assist(line, cell);
 
-//         std::ifstream infile_model("gemini_model.txt");
-//         std::string content_model;
-//         std::getline(infile_model, content_model);
+        std::ifstream infile_model("gemini_model.txt");
+        std::string content_model;
+        std::getline(infile_model, content_model);
 
-//         REQUIRE(content_model == "1234");
-//         infile_model.close();
+        REQUIRE(content_model == "1234");
+        infile_model.close();
 
-//         StreamRedirectRAII redirect(std::cerr);
+        StreamRedirectRAII redirect(std::cerr);
         
-//         assist("%%xassist gemini", "hello");
+        assist("%%xassist gemini", "hello");
 
-//         REQUIRE(!redirect.getCaptured().empty());
+        REQUIRE(!redirect.getCaptured().empty());
 
-//         line = "%%xassist gemini --refresh";
-//         cell = "";
+        line = "%%xassist gemini --refresh";
+        cell = "";
 
-//         assist(line, cell);
+        assist(line, cell);
 
-//         std::ifstream infile_chat("gemini_chat_history.txt");
-//         std::string content_chat;
-//         std::getline(infile_chat, content_chat);
+        std::ifstream infile_chat("gemini_chat_history.txt");
+        std::string content_chat;
+        std::getline(infile_chat, content_chat);
 
-//         REQUIRE(content_chat == "");
-//         infile_chat.close();
+        REQUIRE(content_chat == "");
+        infile_chat.close();
 
-//         std::remove("gemini_api_key.txt");
-//         std::remove("gemini_model.txt");
-//         std::remove("gemini_chat_history.txt");
-//     }
+        std::remove("gemini_api_key.txt");
+        std::remove("gemini_model.txt");
+        std::remove("gemini_chat_history.txt");
+    }
 
-//     TEST_CASE("openai"){
-//         xcpp::xassist assist;
-//         std::string line = "%%xassist openai --save-key";
-//         std::string cell = "1234";
+    TEST_CASE("openai"){
+        xcpp::xassist assist;
+        std::string line = "%%xassist openai --save-key";
+        std::string cell = "1234";
 
-//         assist(line, cell);
+        assist(line, cell);
 
-//         std::ifstream infile("openai_api_key.txt");
-//         std::string content;
-//         std::getline(infile, content);
+        std::ifstream infile("openai_api_key.txt");
+        std::string content;
+        std::getline(infile, content);
 
-//         REQUIRE(content == "1234");
-//         infile.close();
+        REQUIRE(content == "1234");
+        infile.close();
 
-//          line = "%%xassist openai --save-model";
-//         cell = "1234";
+         line = "%%xassist openai --save-model";
+        cell = "1234";
 
-//         assist(line, cell);
+        assist(line, cell);
 
-//         std::ifstream infile_model("openai_model.txt");
-//         std::string content_model;
-//         std::getline(infile_model, content_model);
+        std::ifstream infile_model("openai_model.txt");
+        std::string content_model;
+        std::getline(infile_model, content_model);
 
-//         REQUIRE(content_model == "1234");
-//         infile_model.close();
+        REQUIRE(content_model == "1234");
+        infile_model.close();
 
-//         StreamRedirectRAII redirect(std::cerr);
+        StreamRedirectRAII redirect(std::cerr);
         
-//         assist("%%xassist openai", "hello");
+        assist("%%xassist openai", "hello");
 
-//         REQUIRE(!redirect.getCaptured().empty());
+        REQUIRE(!redirect.getCaptured().empty());
 
-//         std::remove("openai_api_key.txt");
-//         std::remove("openai_model.txt");
-//         std::remove("openai_chat_history.txt");
-//     }
+        std::remove("openai_api_key.txt");
+        std::remove("openai_model.txt");
+        std::remove("openai_chat_history.txt");
+    }
 
-//     TEST_CASE("ollama"){
-//         xcpp::xassist assist;
-//         std::string line = "%%xassist ollama --set-url";
-//         std::string cell = "https://api.openai.com/v1/chat/completions";
+    TEST_CASE("ollama"){
+        xcpp::xassist assist;
+        std::string line = "%%xassist ollama --set-url";
+        std::string cell = "https://api.openai.com/v1/chat/completions";
 
-//         assist(line, cell);
+        assist(line, cell);
 
-//         std::ifstream infile("ollama_url.txt");
-//         std::string content;
-//         std::getline(infile, content);
+        std::ifstream infile("ollama_url.txt");
+        std::string content;
+        std::getline(infile, content);
 
-//         REQUIRE(content == "https://api.openai.com/v1/chat/completions");
-//         infile.close();
+        REQUIRE(content == "https://api.openai.com/v1/chat/completions");
+        infile.close();
 
-//         line = "%%xassist ollama --save-model";
-//         cell = "1234";
+        line = "%%xassist ollama --save-model";
+        cell = "1234";
 
-//         assist(line, cell);
+        assist(line, cell);
 
-//         std::ifstream infile_model("ollama_model.txt");
-//         std::string content_model;
-//         std::getline(infile_model, content_model);
+        std::ifstream infile_model("ollama_model.txt");
+        std::string content_model;
+        std::getline(infile_model, content_model);
 
-//         REQUIRE(content_model == "1234");
-//         infile_model.close();
+        REQUIRE(content_model == "1234");
+        infile_model.close();
 
-//         StreamRedirectRAII redirect(std::cerr);
+        StreamRedirectRAII redirect(std::cerr);
         
-//         assist("%%xassist ollama", "hello");
+        assist("%%xassist ollama", "hello");
 
-//         REQUIRE(!redirect.getCaptured().empty());
+        REQUIRE(!redirect.getCaptured().empty());
 
-//         std::remove("ollama_url.txt");
-//         std::remove("ollama_model.txt");
-//     }
+        std::remove("ollama_url.txt");
+        std::remove("ollama_model.txt");
+    }
 
-// }
-// #endif
+}
+#endif
 
 
 TEST_SUITE("file") {
