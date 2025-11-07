@@ -426,218 +426,218 @@ TEST_SUITE("xpreamble_manager_operator")
     }
 }
 
-// TEST_SUITE("xbuffer")
-// {
-//     // This test case checks if the `xoutput_buffer` correctly calls the callback function
-//     // when the buffer is flushed. It sets up a scenario where a `xoutput_buffer` object is
-//     // created with a callback function, and checks if the callback function is called when
-//     // the buffer is flushed.
-//     TEST_CASE("xoutput_buffer_calls_callback_on_sync")
-//     {
-//         std::string callback_output;
-//         auto callback = [&callback_output](const std::string& value)
-//         {
-//             callback_output = value;
-//         };
-//         xcpp::xoutput_buffer buffer(callback);
-//         std::ostream stream(&buffer);
+TEST_SUITE("xbuffer")
+{
+    // This test case checks if the `xoutput_buffer` correctly calls the callback function
+    // when the buffer is flushed. It sets up a scenario where a `xoutput_buffer` object is
+    // created with a callback function, and checks if the callback function is called when
+    // the buffer is flushed.
+    TEST_CASE("xoutput_buffer_calls_callback_on_sync")
+    {
+        std::string callback_output;
+        auto callback = [&callback_output](const std::string& value)
+        {
+            callback_output = value;
+        };
+        xcpp::xoutput_buffer buffer(callback);
+        std::ostream stream(&buffer);
 
-//         stream << "Hello, world!";
-//         stream.flush();
+        stream << "Hello, world!";
+        stream.flush();
 
-//         REQUIRE(callback_output == "Hello, world!");
-//     }
+        REQUIRE(callback_output == "Hello, world!");
+    }
 
-//     // This test case checks if the `xinput_buffer` correctly calls the callback function
-//     // when the buffer is flushed. It sets up a scenario where a `xinput_buffer` object is
-//     // created with a callback function, and checks if the callback function is called when
-//     // the buffer is flushed.
-//     TEST_CASE("xinput_buffer_calls_callback_on_underflow")
-//     {
-//         std::string callback_input;
-//         auto callback = [&callback_input](std::string& value)
-//         {
-//             value = callback_input;
-//         };
-//         xcpp::xinput_buffer buffer(callback);
-//         std::istream stream(&buffer);
+    // This test case checks if the `xinput_buffer` correctly calls the callback function
+    // when the buffer is flushed. It sets up a scenario where a `xinput_buffer` object is
+    // created with a callback function, and checks if the callback function is called when
+    // the buffer is flushed.
+    TEST_CASE("xinput_buffer_calls_callback_on_underflow")
+    {
+        std::string callback_input;
+        auto callback = [&callback_input](std::string& value)
+        {
+            value = callback_input;
+        };
+        xcpp::xinput_buffer buffer(callback);
+        std::istream stream(&buffer);
 
-//         callback_input = "Hello, world!";
-//         std::string output;
-//         std::getline(stream, output);
+        callback_input = "Hello, world!";
+        std::string output;
+        std::getline(stream, output);
 
-//         REQUIRE(output == "Hello, world!");
-//     }
+        REQUIRE(output == "Hello, world!");
+    }
 
-//     // This test case checks if the `xoutput_buffer` correctly handles an empty output.
-//     // It sets up a scenario where the `xoutput_buffer` is given an empty output, then checks
-//     // if the buffer correctly identifies and handles this situation without errors or exceptions.
-//     TEST_CASE("xoutput_buffer_handles_empty_output")
-//     {
-//         std::string callback_output;
-//         auto callback = [&callback_output](const std::string& value)
-//         {
-//             callback_output = value;
-//         };
+    // This test case checks if the `xoutput_buffer` correctly handles an empty output.
+    // It sets up a scenario where the `xoutput_buffer` is given an empty output, then checks
+    // if the buffer correctly identifies and handles this situation without errors or exceptions.
+    TEST_CASE("xoutput_buffer_handles_empty_output")
+    {
+        std::string callback_output;
+        auto callback = [&callback_output](const std::string& value)
+        {
+            callback_output = value;
+        };
 
-//         xcpp::xoutput_buffer buffer(callback);
-//         std::ostream stream(&buffer);
+        xcpp::xoutput_buffer buffer(callback);
+        std::ostream stream(&buffer);
 
-//         stream << "";
-//         stream.flush();
+        stream << "";
+        stream.flush();
 
-//         REQUIRE(callback_output == "");
-//     }
+        REQUIRE(callback_output == "");
+    }
 
-//     // This test case checks if the `xinput_buffer` correctly handles an empty input.
-//     // It sets up a scenario where the `xinput_buffer` is given an empty input, then checks
-//     // if the buffer correctly identifies and handles this situation without errors or exceptions.
-//     TEST_CASE("xinput_buffer_handles_empty_input")
-//     {
-//         std::string callback_input = "";
-//         auto callback = [&callback_input](std::string& value)
-//         {
-//             value = callback_input;
-//         };
+    // This test case checks if the `xinput_buffer` correctly handles an empty input.
+    // It sets up a scenario where the `xinput_buffer` is given an empty input, then checks
+    // if the buffer correctly identifies and handles this situation without errors or exceptions.
+    TEST_CASE("xinput_buffer_handles_empty_input")
+    {
+        std::string callback_input = "";
+        auto callback = [&callback_input](std::string& value)
+        {
+            value = callback_input;
+        };
 
-//         xcpp::xinput_buffer buffer(callback);
-//         std::istream stream(&buffer);
+        xcpp::xinput_buffer buffer(callback);
+        std::istream stream(&buffer);
 
-//         std::string output;
-//         std::getline(stream, output);
+        std::string output;
+        std::getline(stream, output);
 
-//         REQUIRE(output == "");
-//     }
+        REQUIRE(output == "");
+    }
 
-//     // This test case checks if the `xnull` correctly discards the output.
-//     // It sets up a scenario where the `xnull` is given some output, then checks
-//     // if the output is correctly discarded and not stored or returned.
-//     TEST_CASE("xnull_discards_output")
-//     {
-//         xcpp::xnull null_buf;
-//         std::ostream null_stream(&null_buf);
+    // This test case checks if the `xnull` correctly discards the output.
+    // It sets up a scenario where the `xnull` is given some output, then checks
+    // if the output is correctly discarded and not stored or returned.
+    TEST_CASE("xnull_discards_output")
+    {
+        xcpp::xnull null_buf;
+        std::ostream null_stream(&null_buf);
 
-//         null_stream << "Hello, world!";
+        null_stream << "Hello, world!";
 
-//         REQUIRE(null_stream.good() == true);
-//     }
-// }
+        REQUIRE(null_stream.good() == true);
+    }
+}
 
-// TEST_SUITE("xoptions")
-// {
-//     TEST_CASE("good_status") {
-//         xcpp::argparser parser("test");
-//         parser.add_argument("--verbose").help("increase output verbosity").default_value(false).implicit_value(true);
-//         std::string line = "./main --verbose";
+TEST_SUITE("xoptions")
+{
+    TEST_CASE("good_status") {
+        xcpp::argparser parser("test");
+        parser.add_argument("--verbose").help("increase output verbosity").default_value(false).implicit_value(true);
+        std::string line = "./main --verbose";
 
-//         parser.parse(line);
+        parser.parse(line);
 
-//         REQUIRE(parser["--verbose"] == true);
-//     } 
+        REQUIRE(parser["--verbose"] == true);
+    } 
 
-//     TEST_CASE("bad_status") {
-//         xcpp::argparser parser("test");
-//         parser.add_argument("--verbose");
-//         std::string line = "./main --verbose";
+    TEST_CASE("bad_status") {
+        xcpp::argparser parser("test");
+        parser.add_argument("--verbose");
+        std::string line = "./main --verbose";
 
-//         parser.parse(line);
+        parser.parse(line);
 
-//         bool exceptionThrown = false;
-//         try {
-//             bool isVerbose = (parser["--verbose"] == false);
-//         } catch (const std::exception& e) {
-//             exceptionThrown = true;
-//         }
-//         REQUIRE(exceptionThrown);
-//     }
-// }
+        bool exceptionThrown = false;
+        try {
+            bool isVerbose = (parser["--verbose"] == false);
+        } catch (const std::exception& e) {
+            exceptionThrown = true;
+        }
+        REQUIRE(exceptionThrown);
+    }
+}
 
-// TEST_SUITE("os")
-// {
-//     TEST_CASE("write_new_file") {
-//         xcpp::writefile wf;
-//         std::string line = "filename testfile.txt -h";
-//         std::string cell = "Hello, World!";
+TEST_SUITE("os")
+{
+    TEST_CASE("write_new_file") {
+        xcpp::writefile wf;
+        std::string line = "filename testfile.txt -h";
+        std::string cell = "Hello, World!";
 
-//         wf(line, cell);
+        wf(line, cell);
 
-//         std::ifstream infile("testfile.txt");
-//         REQUIRE(infile.good() == true);
-//         infile.close();
+        std::ifstream infile("testfile.txt");
+        REQUIRE(infile.good() == true);
+        infile.close();
 
-//         std::remove("testfile.txt");
-//     }
+        std::remove("testfile.txt");
+    }
 
-//     TEST_CASE("overwrite_file") {
-//         xcpp::writefile wf;
-//         std::string line = "filename testfile.txt";
-//         std::string cell = "Hello, World!";
+    TEST_CASE("overwrite_file") {
+        xcpp::writefile wf;
+        std::string line = "filename testfile.txt";
+        std::string cell = "Hello, World!";
 
-//         wf(line, cell);
+        wf(line, cell);
 
-//         std::string overwrite_cell = "Overwrite test";
+        std::string overwrite_cell = "Overwrite test";
         
-//         wf(line, overwrite_cell);
+        wf(line, overwrite_cell);
 
-//         std::ifstream infile("testfile.txt");
-//         std::string content;
-//         std::getline(infile, content);
+        std::ifstream infile("testfile.txt");
+        std::string content;
+        std::getline(infile, content);
 
-//         REQUIRE(content == overwrite_cell);
-//         infile.close();
+        REQUIRE(content == overwrite_cell);
+        infile.close();
 
-//         std::remove("testfile.txt");
-//     }
+        std::remove("testfile.txt");
+    }
 
-//     TEST_CASE("append_file") {
-//         xcpp::writefile wf;
-//         std::string line = "filename testfile.txt";
-//         std::string cell = "Hello, World!";
+    TEST_CASE("append_file") {
+        xcpp::writefile wf;
+        std::string line = "filename testfile.txt";
+        std::string cell = "Hello, World!";
 
-//         wf(line, cell);
+        wf(line, cell);
 
-//         std::string append_line = "filename testfile.txt --append";
-//         std::string append_cell = "Hello, again!";
+        std::string append_line = "filename testfile.txt --append";
+        std::string append_cell = "Hello, again!";
 
-//         wf(append_line, append_cell);
+        wf(append_line, append_cell);
 
-//         std::ifstream infile("testfile.txt");
-//         std::vector<std::string> lines;
-//         std::string content;
-//         while(std::getline(infile, content)) {
-//             lines.push_back(content);
-//         }
+        std::ifstream infile("testfile.txt");
+        std::vector<std::string> lines;
+        std::string content;
+        while(std::getline(infile, content)) {
+            lines.push_back(content);
+        }
         
-//         REQUIRE(lines[0] == cell);
-//         REQUIRE(lines[1] == append_cell);
-//         infile.close();
+        REQUIRE(lines[0] == cell);
+        REQUIRE(lines[1] == append_cell);
+        infile.close();
 
-//         std::remove("testfile.txt");
-//     }
+        std::remove("testfile.txt");
+    }
 
-// }
+}
 
-// TEST_SUITE("xsystem_clone")
-// {
-//     TEST_CASE("clone_xsystem_not_null")
-//     {
-//         xcpp::xsystem system;
+TEST_SUITE("xsystem_clone")
+{
+    TEST_CASE("clone_xsystem_not_null")
+    {
+        xcpp::xsystem system;
 
-//         std::unique_ptr<xcpp::xpreamble> clone = system.clone();
+        std::unique_ptr<xcpp::xpreamble> clone = system.clone();
 
-//         REQUIRE(clone != nullptr);
-//     }
+        REQUIRE(clone != nullptr);
+    }
 
-//     TEST_CASE("clone_xsystem_same_type")
-//     {
-//         xcpp::xsystem system;
+    TEST_CASE("clone_xsystem_same_type")
+    {
+        xcpp::xsystem system;
 
-//         std::unique_ptr<xcpp::xpreamble> clone = system.clone();
+        std::unique_ptr<xcpp::xpreamble> clone = system.clone();
 
-//         REQUIRE(clone.get() != nullptr);
+        REQUIRE(clone.get() != nullptr);
 
-//     }
-// }
+    }
+}
 
 // #if !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
 // TEST_SUITE("xsystem_apply")
