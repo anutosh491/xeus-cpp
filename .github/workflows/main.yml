@@ -321,6 +321,7 @@ jobs:
             echo "Running test_xeus_cpp in Google Chrome"
             python ${{ env.BUILD_PREFIX }}/bin/emrun.py --browser="google-chrome" --kill_exit --timeout 60 --browser-args="--headless --no-sandbox"  test_xeus_cpp.html
           fi
+          node -v
           node test_xeus_cpp.js
         timeout-minutes: 4
 
