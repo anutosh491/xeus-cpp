@@ -240,16 +240,7 @@ jobs:
           emmake make -j ${{ env.ncpus }} check-xeus-cpp
           emmake make -j ${{ env.ncpus }} install
 
-      # - name: Test xeus-cpp in Node and install
-      #   shell: bash -l {0}
-      #   run: |
-      #     micromamba create -n node-env -c conda-forge nodejs=22 --yes
-      #     micromamba activate node-env
-      #     cd build/test
-      #     node -v
-      #     node test_xeus_cpp.js
-
-      - name: Test Emscripten xeus-cpp
+      - name: Test Emscripten xeus-cpp in browser
         shell: bash -l {0}
         run: |
           set -e
