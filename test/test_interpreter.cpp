@@ -655,99 +655,99 @@ TEST_SUITE("xsystem_clone")
 // }
 // #endif
 
-// TEST_SUITE("xmagics_contains"){
-//     TEST_CASE("bad_status_cell") {
-//         xcpp::xmagics_manager manager;
-//         xcpp::xmagic_type magic = xcpp::xmagic_type::cell;
-//         // manager.register_magic("my_magic", xcpp::xmagic_type::cell);
+TEST_SUITE("xmagics_contains"){
+    TEST_CASE("bad_status_cell") {
+        xcpp::xmagics_manager manager;
+        xcpp::xmagic_type magic = xcpp::xmagic_type::cell;
+        // manager.register_magic("my_magic", xcpp::xmagic_type::cell);
         
-//         bool result = manager.contains("my_magic", xcpp::xmagic_type::cell);
-//         REQUIRE(result == false);
-//     } 
+        bool result = manager.contains("my_magic", xcpp::xmagic_type::cell);
+        REQUIRE(result == false);
+    } 
 
-//     TEST_CASE("bad_status_line") {
-//         xcpp::xmagics_manager manager;
-//         xcpp::xmagic_type magic = xcpp::xmagic_type::line;
-//         // manager.register_magic("my_magic", xcpp::xmagic_type::cell);
+    TEST_CASE("bad_status_line") {
+        xcpp::xmagics_manager manager;
+        xcpp::xmagic_type magic = xcpp::xmagic_type::line;
+        // manager.register_magic("my_magic", xcpp::xmagic_type::cell);
         
-//         bool result = manager.contains("my_magic", xcpp::xmagic_type::line);
-//         REQUIRE(result == false);
-//     } 
-// }
+        bool result = manager.contains("my_magic", xcpp::xmagic_type::line);
+        REQUIRE(result == false);
+    } 
+}
 
-// class MyMagicLine : public xcpp::xmagic_line {
-// public:
-//     virtual void operator()(const std::string& line) override{
-//         std::cout << line << std::endl;
-//     }
-// };
+class MyMagicLine : public xcpp::xmagic_line {
+public:
+    virtual void operator()(const std::string& line) override{
+        std::cout << line << std::endl;
+    }
+};
 
-// class MyMagicCell : public xcpp::xmagic_cell {
-// public:
-//     virtual void operator()(const std::string& line, const std::string& cell) override{
-//         std::cout << line << cell << std::endl;
-//     }
-// };
+class MyMagicCell : public xcpp::xmagic_cell {
+public:
+    virtual void operator()(const std::string& line, const std::string& cell) override{
+        std::cout << line << cell << std::endl;
+    }
+};
 
-// TEST_SUITE("xmagics_apply"){
-//     TEST_CASE("bad_status_cell") {
-//         xcpp::xmagics_manager manager;
+TEST_SUITE("xmagics_apply"){
+    TEST_CASE("bad_status_cell") {
+        xcpp::xmagics_manager manager;
 
-//         nl::json kernel_res;
-//         manager.apply("%%dummy", kernel_res);
-//         REQUIRE(kernel_res["status"] == "error");
-//     }
+        nl::json kernel_res;
+        manager.apply("%%dummy", kernel_res);
+        REQUIRE(kernel_res["status"] == "error");
+    }
 
-//     TEST_CASE("bad_status_line") {
-//         xcpp::xmagics_manager manager;
+    TEST_CASE("bad_status_line") {
+        xcpp::xmagics_manager manager;
 
-//         nl::json kernel_res;
-//         manager.apply("%dummy", kernel_res);
-//         REQUIRE(kernel_res["status"] == "error");
-//     } 
+        nl::json kernel_res;
+        manager.apply("%dummy", kernel_res);
+        REQUIRE(kernel_res["status"] == "error");
+    } 
 
-//     TEST_CASE("good_status_line") {
+    TEST_CASE("good_status_line") {
 
-//         xcpp::xpreamble_manager preamble_manager;
+        xcpp::xpreamble_manager preamble_manager;
 
-//         preamble_manager.register_preamble("magics", std::make_unique<xcpp::xmagics_manager>());
+        preamble_manager.register_preamble("magics", std::make_unique<xcpp::xmagics_manager>());
 
-//         preamble_manager["magics"].get_cast<xcpp::xmagics_manager>().register_magic("magic2", MyMagicCell());
+        preamble_manager["magics"].get_cast<xcpp::xmagics_manager>().register_magic("magic2", MyMagicCell());
 
-//         nl::json kernel_res;
+        nl::json kernel_res;
 
-//         preamble_manager["magics"].get_cast<xcpp::xmagics_manager>().apply("%%magic2 qwerty", kernel_res);
+        preamble_manager["magics"].get_cast<xcpp::xmagics_manager>().apply("%%magic2 qwerty", kernel_res);
 
-//         REQUIRE(kernel_res["status"] == "ok");
-//     } 
+        REQUIRE(kernel_res["status"] == "ok");
+    } 
 
-//     TEST_CASE("good_status_cell") {
+    TEST_CASE("good_status_cell") {
 
-//         xcpp::xpreamble_manager preamble_manager;
+        xcpp::xpreamble_manager preamble_manager;
 
-//         preamble_manager.register_preamble("magics", std::make_unique<xcpp::xmagics_manager>());
+        preamble_manager.register_preamble("magics", std::make_unique<xcpp::xmagics_manager>());
 
-//         preamble_manager["magics"].get_cast<xcpp::xmagics_manager>().register_magic("magic1", MyMagicLine());
+        preamble_manager["magics"].get_cast<xcpp::xmagics_manager>().register_magic("magic1", MyMagicLine());
 
-//         nl::json kernel_res;
+        nl::json kernel_res;
 
-//         preamble_manager["magics"].get_cast<xcpp::xmagics_manager>().apply("%magic1 qwerty", kernel_res);
+        preamble_manager["magics"].get_cast<xcpp::xmagics_manager>().apply("%magic1 qwerty", kernel_res);
 
-//         REQUIRE(kernel_res["status"] == "ok");
-//     } 
+        REQUIRE(kernel_res["status"] == "ok");
+    } 
 
-//     TEST_CASE("cell magic with empty cell body") {
+    TEST_CASE("cell magic with empty cell body") {
 
-//         xcpp::xmagics_manager manager;
+        xcpp::xmagics_manager manager;
 
-//         StreamRedirectRAII redirect(std::cerr);
+        StreamRedirectRAII redirect(std::cerr);
 
-//         manager.apply("test", "line", "");
+        manager.apply("test", "line", "");
 
-//         REQUIRE(redirect.getCaptured() == "UsageError: %%test is a cell magic, but the cell body is empty.\n"
-//                     "If you only intend to display %%test help, please use a double line break to fill in the cell body.\n");
-//     }
-// }
+        REQUIRE(redirect.getCaptured() == "UsageError: %%test is a cell magic, but the cell body is empty.\n"
+                    "If you only intend to display %%test help, please use a double line break to fill in the cell body.\n");
+    }
+}
 
 // #if defined(__GNUC__) && !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
 // TEST_SUITE("xutils_handler"){
@@ -768,117 +768,117 @@ TEST_SUITE("xsystem_clone")
 // }
 // #endif
 
-// TEST_SUITE("complete_request")
-// {
-//     TEST_CASE("completion_test")
-//     {
-//         std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
-//         xcpp::interpreter interpreter((int)Args.size(), Args.data());
-//         std::string code1 = "#include <iostream>";
-//         nl::json user_expressions = nl::json::object();
-//         xeus::execute_request_config config;
-//         config.silent = false;
-//         config.store_history = false;
-//         config.allow_stdin = false;
-//         nl::json header = nl::json::object();
-//         xeus::xrequest_context::guid_list id = {};
-//         xeus::xrequest_context context(header, id);
+TEST_SUITE("complete_request")
+{
+    TEST_CASE("completion_test")
+    {
+        std::vector<const char*> Args = {/*"-v", "resource-dir", "....."*/};
+        xcpp::interpreter interpreter((int)Args.size(), Args.data());
+        std::string code1 = "#include <iostream>";
+        nl::json user_expressions = nl::json::object();
+        xeus::execute_request_config config;
+        config.silent = false;
+        config.store_history = false;
+        config.allow_stdin = false;
+        nl::json header = nl::json::object();
+        xeus::xrequest_context::guid_list id = {};
+        xeus::xrequest_context context(header, id);
 
-//         std::promise<nl::json> promise;
-//         std::future<nl::json> future = promise.get_future();
-//         auto callback = [&promise](nl::json result) {
-//             promise.set_value(result);
-//         };
+        std::promise<nl::json> promise;
+        std::future<nl::json> future = promise.get_future();
+        auto callback = [&promise](nl::json result) {
+            promise.set_value(result);
+        };
 
-//         interpreter.execute_request(
-//             std::move(context),
-//             std::move(callback),
-//             code1,
-//             std::move(config),
-//             user_expressions
-//         );
-//         nl::json execute = future.get();
+        interpreter.execute_request(
+            std::move(context),
+            std::move(callback),
+            code1,
+            std::move(config),
+            user_expressions
+        );
+        nl::json execute = future.get();
 
-//         REQUIRE(execute["status"] == "ok");
+        REQUIRE(execute["status"] == "ok");
 
-//         std::string code2 = "st";
-//         int cursor_pos = 2;
-//         nl::json result = interpreter.complete_request(code2, cursor_pos);
+        std::string code2 = "st";
+        int cursor_pos = 2;
+        nl::json result = interpreter.complete_request(code2, cursor_pos);
 
-//         REQUIRE(result["cursor_start"] == 0);
-//         REQUIRE(result["cursor_end"] == 2);
-//         REQUIRE(result["status"] == "ok");
-//         size_t found = 0;
-//         for (auto& r : result["matches"]) {
-//             if (r == "static" || r == "struct") {
-//                 found++;
-//             }
-//         }
-//         REQUIRE(found == 2);
-//     }
-// }
+        REQUIRE(result["cursor_start"] == 0);
+        REQUIRE(result["cursor_end"] == 2);
+        REQUIRE(result["status"] == "ok");
+        size_t found = 0;
+        for (auto& r : result["matches"]) {
+            if (r == "static" || r == "struct") {
+                found++;
+            }
+        }
+        REQUIRE(found == 2);
+    }
+}
 
-// TEST_SUITE("xinspect"){
-//     TEST_CASE("class_member_predicate_get_filename"){
-//         xcpp::class_member_predicate cmp;
-//         cmp.class_name = "TestClass";
-//         cmp.kind = "public";
-//         cmp.child_value = "testMethod";
+TEST_SUITE("xinspect"){
+    TEST_CASE("class_member_predicate_get_filename"){
+        xcpp::class_member_predicate cmp;
+        cmp.class_name = "TestClass";
+        cmp.kind = "public";
+        cmp.child_value = "testMethod";
 
-//         pugi::xml_document doc;
-//         pugi::xml_node node = doc.append_child("node");
-//         node.append_attribute("kind") = "class";
-//         pugi::xml_node name = node.append_child("name");
-//         name.append_child(pugi::node_pcdata).set_value("TestClass");
-//         pugi::xml_node child = node.append_child("node");
-//         child.append_attribute("kind") = "public";
-//         pugi::xml_node child_name = child.append_child("name");
-//         child_name.append_child(pugi::node_pcdata).set_value("testMethod");
-//         pugi::xml_node anchorfile = child.append_child("anchorfile");
-//         anchorfile.append_child(pugi::node_pcdata).set_value("testfile.cpp");
+        pugi::xml_document doc;
+        pugi::xml_node node = doc.append_child("node");
+        node.append_attribute("kind") = "class";
+        pugi::xml_node name = node.append_child("name");
+        name.append_child(pugi::node_pcdata).set_value("TestClass");
+        pugi::xml_node child = node.append_child("node");
+        child.append_attribute("kind") = "public";
+        pugi::xml_node child_name = child.append_child("name");
+        child_name.append_child(pugi::node_pcdata).set_value("testMethod");
+        pugi::xml_node anchorfile = child.append_child("anchorfile");
+        anchorfile.append_child(pugi::node_pcdata).set_value("testfile.cpp");
 
-//         REQUIRE(cmp.get_filename(node) == "testfile.cpp");
+        REQUIRE(cmp.get_filename(node) == "testfile.cpp");
     
-//         cmp.child_value = "nonexistentMethod";
-//         REQUIRE(cmp.get_filename(node) == "");
-//     }
+        cmp.child_value = "nonexistentMethod";
+        REQUIRE(cmp.get_filename(node) == "");
+    }
 
-//     TEST_CASE("class_member_predicate_operator"){
-//         xcpp::class_member_predicate cmp;
-//         cmp.class_name = "TestClass";
-//         cmp.kind = "public";
-//         cmp.child_value = "testMethod";
+    TEST_CASE("class_member_predicate_operator"){
+        xcpp::class_member_predicate cmp;
+        cmp.class_name = "TestClass";
+        cmp.kind = "public";
+        cmp.child_value = "testMethod";
 
-//         pugi::xml_document doc;
-//         pugi::xml_node node = doc.append_child("node");
-//         node.append_attribute("kind") = "class";
-//         pugi::xml_node name = node.append_child("name");
-//         name.append_child(pugi::node_pcdata).set_value("TestClass");
-//         pugi::xml_node child = node.append_child("node");
-//         child.append_attribute("kind") = "public";
-//         pugi::xml_node child_name = child.append_child("name");
-//         child_name.append_child(pugi::node_pcdata).set_value("testMethod");
+        pugi::xml_document doc;
+        pugi::xml_node node = doc.append_child("node");
+        node.append_attribute("kind") = "class";
+        pugi::xml_node name = node.append_child("name");
+        name.append_child(pugi::node_pcdata).set_value("TestClass");
+        pugi::xml_node child = node.append_child("node");
+        child.append_attribute("kind") = "public";
+        pugi::xml_node child_name = child.append_child("name");
+        child_name.append_child(pugi::node_pcdata).set_value("testMethod");
 
     
-//         REQUIRE(cmp(node) == true);
-//         node.attribute("kind").set_value("struct");
-//         REQUIRE(cmp(node) == true);
-//         cmp.class_name = "NonexistentClass";
-//         REQUIRE(cmp(node) == false);
-//         cmp.kind = "private";
-//         REQUIRE(cmp(node) == false);
-//         cmp.child_value = "nonexistentMethod";
-//         REQUIRE(cmp(node) == false);
-//     }
+        REQUIRE(cmp(node) == true);
+        node.attribute("kind").set_value("struct");
+        REQUIRE(cmp(node) == true);
+        cmp.class_name = "NonexistentClass";
+        REQUIRE(cmp(node) == false);
+        cmp.kind = "private";
+        REQUIRE(cmp(node) == false);
+        cmp.child_value = "nonexistentMethod";
+        REQUIRE(cmp(node) == false);
+    }
 
-//     TEST_CASE("is_inspect_request"){ 
-//         std::string code = "vector";
-//         std::regex re_expression(R"(non_matching_pattern)");
-//         std::pair<bool, std::smatch> result = xcpp::is_inspect_request(code, re_expression);
-//         REQUIRE(result.first == false);
-//     }
+    TEST_CASE("is_inspect_request"){ 
+        std::string code = "vector";
+        std::regex re_expression(R"(non_matching_pattern)");
+        std::pair<bool, std::smatch> result = xcpp::is_inspect_request(code, re_expression);
+        REQUIRE(result.first == false);
+    }
 
-// }
+}
 
 // #if !defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
 // TEST_SUITE("xassist"){
@@ -1022,63 +1022,63 @@ TEST_SUITE("xsystem_clone")
 // #endif
 
 
-// TEST_SUITE("file") {
-//     TEST_CASE("Write") {
-//         xcpp::writefile wf;
-//         std::string line = "%%file testfile.txt";
-//         std::string cell = "Hello, World!";
+TEST_SUITE("file") {
+    TEST_CASE("Write") {
+        xcpp::writefile wf;
+        std::string line = "%%file testfile.txt";
+        std::string cell = "Hello, World!";
 
-//         wf(line, cell);
+        wf(line, cell);
 
-//         std::ifstream infile("testfile.txt");
-//         std::string content;
-//         std::getline(infile, content);
+        std::ifstream infile("testfile.txt");
+        std::string content;
+        std::getline(infile, content);
 
-//         REQUIRE(content == "Hello, World!");
-//         infile.close();
-//     }
-//     TEST_CASE("Overwrite") {
-//         xcpp::writefile wf;
-//         std::string line = "%%file testfile.txt";
-//         std::string cell = "Hello, World!";
+        REQUIRE(content == "Hello, World!");
+        infile.close();
+    }
+    TEST_CASE("Overwrite") {
+        xcpp::writefile wf;
+        std::string line = "%%file testfile.txt";
+        std::string cell = "Hello, World!";
 
-//         wf(line, cell);
+        wf(line, cell);
 
-//         std::string overwrite_cell = "Overwrite test";
+        std::string overwrite_cell = "Overwrite test";
 
-//         wf(line, overwrite_cell);
+        wf(line, overwrite_cell);
 
-//         std::ifstream infile("testfile.txt");
-//         std::string content;
-//         std::getline(infile, content);
+        std::ifstream infile("testfile.txt");
+        std::string content;
+        std::getline(infile, content);
 
-//         REQUIRE(content == overwrite_cell);
-//         infile.close();
-//     }
-//     TEST_CASE("Append") {
-//         xcpp::writefile wf;
-//         std::string line = "%%file testfile.txt";
-//         std::string cell = "Hello, World!";
+        REQUIRE(content == overwrite_cell);
+        infile.close();
+    }
+    TEST_CASE("Append") {
+        xcpp::writefile wf;
+        std::string line = "%%file testfile.txt";
+        std::string cell = "Hello, World!";
 
-//         wf(line, cell);
+        wf(line, cell);
 
-//         std::string append_line = "%%file -a testfile.txt";
-//         std::string append_cell = "Hello, again!";
+        std::string append_line = "%%file -a testfile.txt";
+        std::string append_cell = "Hello, again!";
 
-//         wf(append_line, append_cell);
+        wf(append_line, append_cell);
 
-//         std::ifstream infile("testfile.txt");
-//         std::vector<std::string> lines;
-//         std::string content;
-//         while(std::getline(infile, content)) {
-//             lines.push_back(content);
-//         }
+        std::ifstream infile("testfile.txt");
+        std::vector<std::string> lines;
+        std::string content;
+        while(std::getline(infile, content)) {
+            lines.push_back(content);
+        }
 
-//         REQUIRE(lines[0] == "Hello, World!");
-//         REQUIRE(lines[1] == "Hello, again!");
-//         infile.close();
-//     }
-// }
+        REQUIRE(lines[0] == "Hello, World!");
+        REQUIRE(lines[1] == "Hello, again!");
+        infile.close();
+    }
+}
 
 TEST_SUITE("mime_bundle_repr")
 {
