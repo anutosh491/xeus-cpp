@@ -72,12 +72,14 @@ if(EMSCRIPTEN)
         PUBLIC "SHELL:-sWASM_BIGINT"
         PUBLIC "SHELL:-sASSERTIONS=2"          # runtime errors instead of silent traps
         PUBLIC "SHELL:-sALLOW_MEMORY_GROWTH=1"
-        PUBLIC "SHELL:-sEXIT_RUNTIME=1"
         PUBLIC "SHELL:-sSTACK_SIZE=32mb"
-        PUBLIC "SHELL:-sINITIAL_MEMORY=512mb"  # plenty for JSON/tests
+        PUBLIC "SHELL:-sINITIAL_MEMORY=128mb"  # plenty for JSON/tests
+        PUBLIC "SHELL:-sSAFE_HEAP=1"           # catch invalid heap access
         PUBLIC "SHELL:--preload-file ${ESCAPED_SYSROOT_PATH}/include@/include"
         PUBLIC "SHELL:--preload-file ../${XEUS_CPP_DATA_DIR}@/share/xeus-cpp"
         PUBLIC "SHELL:--preload-file ../${XEUS_CPP_CONF_DIR}@/etc/xeus-cpp"
+        PUBLIC "SHELL: --emrun"
+        PUBLIC "SHELL: -s MINIFY_HTML=0"
     )
 
     target_include_directories(test_xeus_cpp PRIVATE ${XEUS_CPP_INCLUDE_DIR})
