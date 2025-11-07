@@ -240,10 +240,8 @@ jobs:
             -DCMAKE_FIND_ROOT_PATH=$PREFIX                    \
             -DSYSROOT_PATH=$SYSROOT_PATH                      \
             -DCMAKE_COMPILE_WARNING_AS_ERROR=ON               \
-            -DCMAKE_CROSSCOMPILING_EMULATOR=$(which node)     \
             ..
 
-          node -v
           emmake make -j ${{ env.ncpus }} check-xeus-cpp
           emmake make -j ${{ env.ncpus }} install
 
