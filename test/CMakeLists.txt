@@ -70,7 +70,7 @@ if(EMSCRIPTEN)
         PUBLIC "SHELL:-fexceptions"
         PUBLIC "SHELL:-sMAIN_MODULE=1"
         PUBLIC "SHELL:-sWASM_BIGINT"
-        PUBLIC "SHELL:-sASSERTIONS=0"          # runtime errors instead of silent traps
+        PUBLIC "SHELL:-sASSERTIONS=2"          # runtime errors instead of silent traps
         PUBLIC "SHELL:-sALLOW_MEMORY_GROWTH=1"
         PUBLIC "SHELL:-sEXIT_RUNTIME=1"
         PUBLIC "SHELL:-sSTACK_SIZE=32mb"
