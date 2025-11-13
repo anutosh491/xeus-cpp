@@ -209,7 +209,7 @@ TEST_SUITE("Test Stream Redirection")
 {
     TEST_CASE("C and C++ stdout/stderr capture with status check") 
     {
-        std::vector<const char*> Args = {"-resource-dir", "/lib/clang/20"};
+        std::vector<const char*> Args = {"-v"};
         xcpp::interpreter interpreter((int)Args.size(), Args.data());
 
         xeus::execute_request_config config;
