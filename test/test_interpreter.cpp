@@ -205,6 +205,51 @@ TEST_SUITE("execute_request")
     }
 }
 
+TEST_SUITE("Test Stream Redirection")
+{
+    TEST_CASE("C and C++ stdout/stderr capture") 
+    {
+        std::vector<const char*> Args = {};
+        xcpp::interpreter interpreter((int)Args.size(), Args.data());
+    
+        xeus::execute_request_config config;
+        config.silent = false;
+        config.store_history = false;
+        config.allow_stdin = false;
+    
+        nl::json header = nl::json::object();
+        xeus::xrequest_context::guid_list id = {};
+        xeus::xrequest_context context(header, id);
+    
+        std::promise<nl::json> promise;
+        auto callback = [&promise](nl::json result) { promise.set_value(result); };
+    
+        // Redirect std::cout and std::cerr
+        StreamRedirectRAII cout_redirect(std::cout);
+        StreamRedirectRAII cerr_redirect(std::cerr);
+    
+        std::string code = R"(
+            #include <stdio.h>
+            #include <iostream>
+            printf("C stdout\n");
+            fprintf(stderr, "C stderr\n");
+            std::cout << "C++ stdout\n";
+            std::cerr << "C++ stderr\n";
+        )";
+    
+        interpreter.execute_request(context, callback, code, config, nl::json::object());
+        (void)promise.get_future().get(); // wait for result
+    
+        std::string captured_out = cout_redirect.getCaptured();
+        std::string captured_err = cerr_redirect.getCaptured();
+    
+        REQUIRE(captured_out.find("C stdout") != std::string::npos);
+        REQUIRE(captured_out.find("C++ stdout") != std::string::npos);
+        REQUIRE(captured_err.find("C stderr") != std::string::npos);
+        REQUIRE(captured_err.find("C++ stderr") != std::string::npos);
+    }
+}
+
 TEST_SUITE("inspect_request")
 {
 #if defined(XEUS_CPP_EMSCRIPTEN_WASM_BUILD)
@@ -1092,50 +1137,5 @@ TEST_SUITE("mime_bundle_repr")
         };
 
         REQUIRE(res == expected);
-    }
-}
-
-TEST_SUITE("Test Stream Redirection")
-{
-    TEST_CASE("C and C++ stdout/stderr capture") 
-    {
-        std::vector<const char*> Args = {};
-        xcpp::interpreter interpreter((int)Args.size(), Args.data());
-    
-        xeus::execute_request_config config;
-        config.silent = false;
-        config.store_history = false;
-        config.allow_stdin = false;
-    
-        nl::json header = nl::json::object();
-        xeus::xrequest_context::guid_list id = {};
-        xeus::xrequest_context context(header, id);
-    
-        std::promise<nl::json> promise;
-        auto callback = [&promise](nl::json result) { promise.set_value(result); };
-    
-        // Redirect std::cout and std::cerr
-        StreamRedirectRAII cout_redirect(std::cout);
-        StreamRedirectRAII cerr_redirect(std::cerr);
-    
-        std::string code = R"(
-            #include <stdio.h>
-            #include <iostream>
-            printf("C stdout\n");
-            fprintf(stderr, "C stderr\n");
-            std::cout << "C++ stdout\n";
-            std::cerr << "C++ stderr\n";
-        )";
-    
-        interpreter.execute_request(context, callback, code, config, nl::json::object());
-        (void)promise.get_future().get(); // wait for result
-    
-        std::string captured_out = cout_redirect.getCaptured();
-        std::string captured_err = cerr_redirect.getCaptured();
-    
-        REQUIRE(captured_out.find("C stdout") != std::string::npos);
-        REQUIRE(captured_out.find("C++ stdout") != std::string::npos);
-        REQUIRE(captured_err.find("C stderr") != std::string::npos);
-        REQUIRE(captured_err.find("C++ stderr") != std::string::npos);
     }
 }
