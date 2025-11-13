@@ -212,6 +212,7 @@ TEST_SUITE("Test Stream Redirection")
         REQUIRE(1 == 1);
         std::vector<const char*> Args = {"-v"};
         xcpp::interpreter interpreter((int)Args.size(), Args.data());
+        interpreter.restore_output();
 
         xeus::execute_request_config config;
         config.silent = false;
