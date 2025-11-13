@@ -39,12 +39,14 @@ void* createInterpreter(const Args &ExtraArgs = {}) {
         std::cerr << "Failed to detect the resource-dir\n";
     }
   }
+#ifndef EMSCRIPTEN
   std::vector<std::string> CxxSystemIncludes;
   Cpp::DetectSystemCompilerIncludePaths(CxxSystemIncludes);
   for (const std::string& CxxInclude : CxxSystemIncludes) {
     ClangArgs.push_back("-isystem");
     ClangArgs.push_back(CxxInclude.c_str());
   }
+#endif
   ClangArgs.insert(ClangArgs.end(), ExtraArgs.begin(), ExtraArgs.end());
   // FIXME: We should process the kernel input options and conditionally pass
   // the gpu args here.
