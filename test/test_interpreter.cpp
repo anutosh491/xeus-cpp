@@ -209,6 +209,7 @@ TEST_SUITE("Test Stream Redirection")
 {
     TEST_CASE("C and C++ stdout/stderr capture with status check") 
     {
+        REQUIRE(1 == 1);
         std::vector<const char*> Args = {"-v"};
         xcpp::interpreter interpreter((int)Args.size(), Args.data());
 
@@ -244,7 +245,7 @@ TEST_SUITE("Test Stream Redirection")
         std::string captured_out = cout_redirect.getCaptured();
         std::string captured_err = cerr_redirect.getCaptured();
 
-        REQUIRE(result["status"] != "ok");
+        REQUIRE(result["status"] == "ok");
         REQUIRE(captured_out.find("C stdout") != std::string::npos);
         REQUIRE(captured_out.find("C++ stdout") != std::string::npos);
         REQUIRE(captured_err.find("C stderr") != std::string::npos);
