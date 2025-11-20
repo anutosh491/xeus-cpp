@@ -208,42 +208,65 @@ TEST_SUITE("execute_request")
     {
         std::vector<const char*> Args = {};
         xcpp::interpreter interpreter((int)Args.size(), Args.data());
-
+    
         xeus::execute_request_config config;
         config.silent = false;
         config.store_history = false;
         config.allow_stdin = false;
-
+    
         nl::json header = nl::json::object();
         xeus::xrequest_context::guid_list id = {};
         xeus::xrequest_context context(header, id);
-
+    
         std::promise<nl::json> promise;
         auto callback = [&promise](nl::json result) { promise.set_value(result); };
-
-        // Redirect **stderr first**, stdout second
-        StreamRedirectRAII cerr_redirect(std::cerr);
-        StreamRedirectRAII cout_redirect(std::cout);
-
-        std::string code = R"(
+    
+        // 1. TEST C++ STREAMS
+        StreamRedirectRAII cerr_redirect_cpp(std::cerr);
+        StreamRedirectRAII cout_redirect_cpp(std::cout);
+    
+        std::string cpp_code = R"(
             #include <iostream>
             std::cerr << "CPP_ERR\n";
             std::cout << "CPP_OUT\n";
         )";
-
-        interpreter.execute_request(context, callback, code, config, nl::json::object());
-        nl::json result = promise.get_future().get();  // wait for kernel reply
-
-        std::string err = cerr_redirect.getCaptured();
-        std::string out = cout_redirect.getCaptured();
-
-        // Interpreter status must be OK
-        REQUIRE(result["status"] == "ok");
-
-        // Exact matches
-        REQUIRE(err == "CPP_ERR\n");
-        REQUIRE(out == "CPP_OUT\n");
+    
+        interpreter.execute_request(context, callback, cpp_code, config, nl::json::object());
+        nl::json result_cpp = promise.get_future().get();
+    
+        std::string err_cpp = cerr_redirect_cpp.getCaptured();
+        std::string out_cpp = cout_redirect_cpp.getCaptured();
+    
+        REQUIRE(result_cpp["status"] == "ok");
+        REQUIRE(err_cpp == "CPP_ERR\n");
+        REQUIRE(out_cpp == "CPP_OUT\n");
+    
+        // 2. TEST C STREAMS
+    
+        std::promise<nl::json> promise2;
+        auto callback2 = [&promise2](nl::json result) { promise2.set_value(result); };
+    
+        StreamRedirectRAII cerr_redirect_c(std::cerr);
+        // StreamRedirectRAII cout_redirect_c(std::cout);
+    
+        std::string c_code = R"(
+            #include <stdio.h>
+            fprintf(stderr, "C_ERR\n");
+            // printf("C_OUT\n");
+            // fflush(stdout);    // IMPORTANT
+        )";
+    
+        interpreter.execute_request(context, callback2, c_code, config, nl::json::object());
+        nl::json result_c = promise2.get_future().get();
+    
+        std::string err_c = cerr_redirect_c.getCaptured();
+        // std::string out_c = cout_redirect_c.getCaptured();
+    
+        REQUIRE(result_c["status"] == "ok");
+        REQUIRE(err_c == "C_ERR\n");
+        // REQUIRE(out_c == "C_OUT\n");
     }
+
 
 }
 
