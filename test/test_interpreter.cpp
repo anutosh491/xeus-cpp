@@ -204,7 +204,7 @@ TEST_SUITE("execute_request")
         REQUIRE(result["status"] == "error");
     }
 
-    TEST_CASE("C++ stderr capture")
+    TEST_CASE("C++ stdout/stderr capture (exact match)")
     {
         std::vector<const char*> Args = {};
         xcpp::interpreter interpreter((int)Args.size(), Args.data());
@@ -221,20 +221,28 @@ TEST_SUITE("execute_request")
         std::promise<nl::json> promise;
         auto callback = [&promise](nl::json result) { promise.set_value(result); };
 
-        // Redirect only std::cerr
+        // Redirect **stderr first**, stdout second
         StreamRedirectRAII cerr_redirect(std::cerr);
+        StreamRedirectRAII cout_redirect(std::cout);
 
         std::string code = R"(
             #include <iostream>
             std::cerr << "CPP_ERR\n";
+            std::cout << "CPP_OUT\n";
         )";
 
         interpreter.execute_request(context, callback, code, config, nl::json::object());
-        (void)promise.get_future().get(); // wait for result
+        nl::json result = promise.get_future().get();  // wait for kernel reply
 
         std::string err = cerr_redirect.getCaptured();
+        std::string out = cout_redirect.getCaptured();
 
+        // Interpreter status must be OK
+        REQUIRE(result["status"] == "ok");
+
+        // Exact matches
         REQUIRE(err == "CPP_ERR\n");
+        REQUIRE(out == "CPP_OUT\n");
     }
 
 }
