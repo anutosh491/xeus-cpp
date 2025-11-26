@@ -237,12 +237,23 @@ jobs:
 
           export BUILD_PREFIX=$MAMBA_ROOT_PREFIX/envs/xeus-cpp-wasm-build
           echo "BUILD_PREFIX=$BUILD_PREFIX" >> $GITHUB_ENV
+
+          # -------------------------
+          # Install custom Emscripten into BUILD_PREFIX
+          # -------------------------
+          curl -L -o emsdk.tar.bz2 \
+            https://github.com/anutosh491/emscripten-binaries/releases/download/v4.0.9/emscripten_emscripten-wasm32-4.0.9-h60d57d3_4.tar.bz2
+
+          curl -L -o abi.tar.bz2 \
+            https://github.com/anutosh491/emscripten-binaries/releases/download/v4.0.9/emscripten-abi-4.0.9-h4616a5c_4.tar.bz2
+
+          tar -xjf emsdk.tar.bz2 -C "$BUILD_PREFIX"
+          tar -xjf abi.tar.bz2   -C "$BUILD_PREFIX"
+
+          
           export PREFIX=$MAMBA_ROOT_PREFIX/envs/xeus-cpp-wasm-host
           echo "PREFIX=$PREFIX" >> $GITHUB_ENV
           export SYSROOT_PATH=$BUILD_PREFIX/opt/emsdk/upstream/emscripten/cache/sysroot
-
-          micromamba create -n node-env -c conda-forge nodejs=22
-          export PATH="$MAMBA_ROOT_PREFIX/envs/node-env/bin:$PATH"
 
           emcmake cmake \
             -DCMAKE_BUILD_TYPE=Release                        \
